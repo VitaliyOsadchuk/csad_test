@@ -4,25 +4,22 @@ on: [push, pull_request]
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install build dependencies
-      run: sudo apt-get install build-essential g++ make
-
     - name: Grant execute permission for build and test scripts
       run: |
-        chmod +x ci/build.sh
-        chmod +x ci/test.sh
+        icacls ci/build.sh /grant Everyone:F
+        icacls ci/test.sh /grant Everyone:F
 
     - name: Build binaries
-      run: ./ci/build.sh
+      run: ci/build.sh
 
     - name: Run tests
-      run: ./ci/test.sh
+      run: ci/test.sh
 
     - name: Archive test results
       if: always()

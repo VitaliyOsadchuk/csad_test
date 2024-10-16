@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Перевірка наявності директорії для бінарних файлів
 mkdir -p build
 
-g++ -o build/SW_Task2 src/SW_Task2/SW_Task2/client.cpp
+# Компіляція головного проекту
+cl /EHsc /Fe:build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp
 
-g++ -o build/test_serial_communication tests/test_serial_communication/test_serial_communication.cpp -I3party/googletest/include -L3party/googletest/lib -lgtest -lgtest_main -lpthread
+# Переміщення виконуваного файлу тесту до build
+cp tests/test_serial_communication/x64/Debug/test_serial_communication.exe build/
