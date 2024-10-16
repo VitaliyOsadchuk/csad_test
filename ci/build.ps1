@@ -5,7 +5,7 @@ New-Item -ItemType Directory -Force -Path "build"
 
 # Компіляція головного проекту
 echo "Compiling main project..."
-& cl /EHsc /Fe:build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp
+cl /EHsc /Fe:build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp
 
 # Перевірка результатів компіляції
 if ($LASTEXITCODE -eq 0) {
@@ -15,20 +15,15 @@ if ($LASTEXITCODE -eq 0) {
     exit 1
 }
 
-# Перевірка існування файлу виконуваного тесту
-if (Test-Path "tests/test_serial_communication/x64/Debug/test_serial_communication.exe") {
-    echo "Test executable found, copying to build directory."
-    Copy-Item -Path "tests/test_serial_communication/x64/Debug/test_serial_communication.exe" -Destination "build/test_serial_communication.exe"
-} else {
-    echo "Test executable not found."
-    exit 1
-}
+# Компіляція тестового проекту
+echo "Compiling test project..."
+cl /EHsc /Fe:build/test_serial_communication.exe tests/test_serial_communication/test_serial_communication.cpp
 
-# Перевірка успішності копіювання
-if (Test-Path "build/test_serial_communication.exe") {
-    echo "Test executable copied successfully."
+# Перевірка результатів компіляції тесту
+if ($LASTEXITCODE -eq 0) {
+    echo "Test project compiled successfully."
 } else {
-    echo "Failed to copy test executable."
+    echo "Failed to compile test project."
     exit 1
 }
 
