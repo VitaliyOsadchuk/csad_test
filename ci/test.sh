@@ -3,7 +3,7 @@
 echo "Running test executable..."
 build/test_serial_communication.exe > ci/test_output.txt 2>&1
 
-# Перевірка, чи тестовий файл успішно виконано
+# РџРµСЂРµРІС–СЂРєР°, С‡Рё С‚РµСЃС‚РѕРІРёР№ С„Р°Р№Р» СѓСЃРїС–С€РЅРѕ РІРёРєРѕРЅР°РЅРѕ
 if [ $? -eq 0 ]; then
     echo "Tests executed successfully."
 else
@@ -12,11 +12,11 @@ else
     exit 1
 fi
 
-# Вивід вмісту тестового файлу для журналювання
+# Р’РёРІС–Рґ РІРјС–СЃС‚Сѓ С‚РµСЃС‚РѕРІРѕРіРѕ С„Р°Р№Р»Сѓ РґР»СЏ Р¶СѓСЂРЅР°Р»СЋРІР°РЅРЅСЏ
 echo "Test output content:"
 cat ci/test_output.txt
 
-# Переконайтеся, що створений файл існує та не порожній
+# РџРµСЂРµРєРѕРЅР°Р№С‚РµСЃСЏ, С‰Рѕ СЃС‚РІРѕСЂРµРЅРёР№ С„Р°Р№Р» С–СЃРЅСѓС” С‚Р° РЅРµ РїРѕСЂРѕР¶РЅС–Р№
 if [ -s ci/test_output.txt ]; then
     echo "Test output file created successfully and is not empty."
 else
