@@ -10,6 +10,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Install Visual Studio Build Tools
+      run: |
+        choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional"
+    
+    - name: Set up MSVC environment
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+
     - name: Grant execute permission for build and test scripts
       run: bash -c "chmod +x ci/build.sh ci/test.sh"
 
