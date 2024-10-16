@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Запуск тестового виконуваного файлу та збереження результатів
-tests/test_serial_communication/x64/Debug/test_serial_communication.exe > ci/test_output.txt
+build/test_serial_communication.exe > ci/test_output.txt
 
 if [ $? -eq 0 ]; then
     echo "Tests executed successfully."
