@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Запуск тестового виконуваного файлу та збереження результатів
-build/test_serial_communication.exe > ci/test_output.txt
+./tests/test_serial_communication/x64/Debug/test_serial_communication.exe > ci/test_output.txt
 
 if [ $? -eq 0 ]; then
     echo "Tests executed successfully."
@@ -10,10 +10,10 @@ else
     exit 1
 fi
 
-# Переконайтеся, що створений файл існує
-if [ -f ci/test_output.txt ]; then
-    echo "Test output file created successfully."
+# Переконайтеся, що створений файл існує та не порожній
+if [ -s ci/test_output.txt ]; then
+    echo "Test output file created successfully and is not empty."
 else
-    echo "Failed to create test output file."
+    echo "Test output file is empty or does not exist."
     exit 1
 fi
