@@ -5,7 +5,7 @@ New-Item -ItemType Directory -Force -Path "build"
 
 # Компіляція головного проекту
 echo "Compiling main project..."
-cl /EHsc /Fe:build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp
+& cl /EHsc /Fe:build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp
 
 # Перевірка результатів компіляції
 if ($LASTEXITCODE -eq 0) {
