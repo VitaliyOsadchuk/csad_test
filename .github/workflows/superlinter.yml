@@ -1,36 +1,15 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-﻿name: CI Pipeline
+name: CI Pipeline
 
 on: [push, pull_request]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-=======
-=======
->>>>>>> 2965ab94e06f813082c98f2dcec33ded1628331f
-name: Test Arduino Communication
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  test-arduino-communication:
-    runs-on: windows-latest
-<<<<<<< HEAD
->>>>>>> 2965ab94e06f813082c98f2dcec33ded1628331f
-=======
->>>>>>> 2965ab94e06f813082c98f2dcec33ded1628331f
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     - name: Set up CMake
       uses: lukka/get-cmake@v3
 
@@ -53,40 +32,3 @@ jobs:
       with:
         name: binaries
         path: build/
-=======
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install pyserial
-      run: pip install pyserial
-
-    - name: Test Arduino Communication
-      run: |
-        python -m unittest discover -s tests -p "test_serial_communication.py"
-
-=======
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install pyserial
-      run: pip install pyserial
-
-    - name: Test Arduino Communication
-      run: |
-        python -m unittest discover -s tests -p "test_serial_communication.py"
-
->>>>>>> 2965ab94e06f813082c98f2dcec33ded1628331f
-    - name: Verify Message Length
-      run: |
-        if not g++ -o check_message_length check_message_length.cpp; then
-          echo "Failed to compile check_message_length.cpp" && exit 1
-        fi
-        ./check_message_length
-<<<<<<< HEAD
->>>>>>> 2965ab94e06f813082c98f2dcec33ded1628331f
-=======
->>>>>>> 2965ab94e06f813082c98f2dcec33ded1628331f
