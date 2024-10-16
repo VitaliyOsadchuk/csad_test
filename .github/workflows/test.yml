@@ -12,14 +12,14 @@ jobs:
 
     - name: Grant execute permission for build and test scripts
       run: |
-        icacls ci/build.sh /grant Everyone:F
-        icacls ci/test.sh /grant Everyone:F
+        icacls ci/build.ps1 /grant Everyone:F
+        icacls ci/test.ps1 /grant Everyone:F
 
     - name: Build binaries
-      run: pwsh ci/build.sh
+      run: pwsh ci/build.ps1
 
     - name: Run tests
-      run: pwsh ci/test.sh
+      run: pwsh ci/test.ps1
 
     - name: Archive test results
       if: always()
