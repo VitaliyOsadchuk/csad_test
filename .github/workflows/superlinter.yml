@@ -3,11 +3,10 @@ name: Test Communication
 on:
   push:
     branches:
-      - feature/develop/task2  # Тестування при пуші в цю гілку
+      - main  
   pull_request:
     branches:
-      - develop                 # Тестування при PR до develop
-      - feature/develop/task2   # Тестування при PR з task2
+      - main                 
 
 jobs:
   build:
