@@ -97,6 +97,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="pseudo_serial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp" />

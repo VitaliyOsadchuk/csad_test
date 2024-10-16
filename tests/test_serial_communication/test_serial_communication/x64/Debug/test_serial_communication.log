@@ -6,7 +6,4 @@ C:\Users\MSI\Desktop\csad_test\tests\test_serial_communication\test_serial_commu
       C:\Users\MSI\Desktop\csad_test\tests\test_serial_communication\test_serial_communication\test.cpp(3,1):
       use of precompiled header
   
-C:\Users\MSI\Desktop\csad_test\tests\test_serial_communication\test_serial_communication\test.cpp(54,5): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
-  (compiling source file '/test.cpp')
-  
   test_serial_communication.vcxproj -> C:\Users\MSI\Desktop\csad_test\tests\test_serial_communication\x64\Debug\test_serial_communication.exe
