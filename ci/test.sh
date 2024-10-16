@@ -1,4 +1,19 @@
 #!/bin/bash
 
-# «‡ÔÛÒÍ ÚÂÒÚÓ‚Ó„Ó ‚ËÍÓÌÛ‚‡ÌÓ„Ó Ù‡ÈÎÛ Ú‡ Á·ÂÂÊÂÌÌˇ ÂÁÛÎ¸Ú‡Ú≥‚
+# –ó–∞–ø—É—Å–∫ —Ç–µ—Å—Ç–æ–≤–æ–≥–æ –≤–∏–∫–æ–Ω—É–≤–∞–Ω–æ–≥–æ —Ñ–∞–π–ª—É —Ç–∞ –∑–±–µ—Ä–µ–∂–µ–Ω–Ω—è —Ä–µ–∑—É–ª—å—Ç–∞—Ç—ñ–≤
 build/test_serial_communication.exe > ci/test_output.txt
+
+if [ $? -eq 0 ]; then
+    echo "Tests executed successfully."
+else
+    echo "Failed to execute tests."
+    exit 1
+fi
+
+# –ü–µ—Ä–µ–∫–æ–Ω–∞–π—Ç–µ—Å—è, —â–æ —Å—Ç–≤–æ—Ä–µ–Ω–∏–π —Ñ–∞–π–ª —ñ—Å–Ω—É—î
+if [ -f ci/test_output.txt ]; then
+    echo "Test output file created successfully."
+else
+    echo "Failed to create test output file."
+    exit 1
+fi
