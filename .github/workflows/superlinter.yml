@@ -1,0 +1,49 @@
+name: Test Communication
+
+on:
+  push:
+    branches:
+      - feature/develop/task2  # Тестування при пуші в цю гілку
+  pull_request:
+    branches:
+      - develop                 # Тестування при PR до develop
+      - feature/develop/task2   # Тестування при PR з task2
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install g++
+        run: |
+          choco install mingw -y  # Встановлення g++ за допомогою Chocolatey
+
+      - name: Build SW
+        run: |
+          g++ -o SW_Task2\SW_Task2.exe SW_Task2\SW_Task2\client.cpp -DUNICODE -D_UNICODE  # Додавання флагів для підтримки Unicode
+
+      - name: Run SW
+        run: |
+          .\SW_Task2\SW_Task2.exe > SW_Task2\output.txt  # Зберігаємо вивід у файл
+
+      - name: Check message length
+        run: |
+          $message = Get-Content SW_Task2\output.txt | Select-String "message:"
+          Write-Host "Message: $message"
+          if (-not $message) {
+            Write-Host "Message length is 0!"
+            exit 1
+          } else {
+            Write-Host "Test passed: Message length is greater than 0!"
+          }
+
+      - name: Create artifacts
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries-and-reports
+          path: |
+            SW_Task2\SW_Task2.exe
+            SW_Task2\output.txt
