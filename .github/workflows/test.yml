@@ -10,16 +10,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Grant execute permission for build and test scripts
+    - name: Set up Developer Command Prompt
+      shell: cmd
       run: |
-        icacls ci/build.ps1 /grant Everyone:F
-        icacls ci/test.ps1 /grant Everyone:F
-
-    - name: Build binaries
-      run: pwsh ci/build.ps1
-
-    - name: Run tests
-      run: pwsh ci/test.ps1
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
+        ci\build.ps1
+        ci\test.ps1
 
     - name: Archive test results
       if: always()
