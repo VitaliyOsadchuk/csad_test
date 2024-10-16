@@ -11,15 +11,13 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Grant execute permission for build and test scripts
-      run: |
-        icacls ci/build.sh /grant Everyone:F
-        icacls ci/test.sh /grant Everyone:F
+      run: bash -c "chmod +x ci/build.sh ci/test.sh"
 
     - name: Build binaries
-      run: ci/build.sh
+      run: bash ci/build.sh
 
     - name: Run tests
-      run: ci/test.sh
+      run: bash ci/test.sh
 
     - name: Archive test results
       if: always()
