@@ -1,48 +1,33 @@
-name: Test Communication
+name: Test Arduino Communication
 
 on:
   push:
     branches:
-      - main  
-  pull_request:
-    branches:
-      - main                 
+      - main
 
 jobs:
-  build:
+  test-arduino-communication:
     runs-on: windows-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install g++
-        run: |
-          choco install mingw -y  # Встановлення g++ за допомогою Chocolatey
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Build SW
-        run: |
-          g++ -o SW_Task2\SW_Task2.exe SW_Task2\SW_Task2\client.cpp -DUNICODE -D_UNICODE  # Додавання флагів для підтримки Unicode
+    - name: Install pyserial
+      run: pip install pyserial
 
-      - name: Run SW
-        run: |
-          .\SW_Task2\SW_Task2.exe > SW_Task2\output.txt  # Зберігаємо вивід у файл
+    - name: Test Arduino Communication
+      run: |
+        python -m unittest discover -s tests -p "test_serial_communication.py"
 
-      - name: Check message length
-        run: |
-          $message = Get-Content SW_Task2\output.txt | Select-String "message:"
-          Write-Host "Message: $message"
-          if (-not $message) {
-            Write-Host "Message length is 0!"
-            exit 1
-          } else {
-            Write-Host "Test passed: Message length is greater than 0!"
-          }
-
-      - name: Create artifacts
-        if: success()
-        uses: actions/upload-artifact@v3
-        with:
-          name: binaries-and-reports
-          path: |
-            SW_Task2\SW_Task2.exe
-            SW_Task2\output.txt
+    - name: Verify Message Length
+      run: |
+        if not g++ -o check_message_length check_message_length.cpp; then
+          echo "Failed to compile check_message_length.cpp" && exit 1
+        fi
+        ./check_message_length
