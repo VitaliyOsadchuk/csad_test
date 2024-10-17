@@ -3,7 +3,7 @@ name: CI Pipeline
 on: [push, pull_request]
 
 jobs:
-  build-and-test:
+  Build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,23 +13,18 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libboost-all-dev mingw-w64
+        sudo apt-get install -y g++ libboost-all-dev
 
-    - name: Set up MinGW environment
-      run: echo "/usr/x86_64-w64-mingw32/bin" >> $GITHUB_PATH
+    - name: Build SW with Mock HW
+      run: g++ -DMOCK_HW -o Build/SW2_task2 src/SW_Task2/SW_Task2/client.cpp -I src/ -lboost_system -lpthread
 
-    - name: Configure virtual serial ports using Socat
+    - name: Run SW program with Mock HW
       run: |
-        sudo apt-get install -y socat
-        sudo socat -d -d PTY,link=/dev/ttyS10,raw,echo=0 PTY,link=/dev/ttyS11,raw,echo=0 &
-
-    - name: Build SW
-      run: x86_64-w64-mingw32-g++ -o Build/SW2_task2.exe src/SW2_task2/SW2_task2/SW2_task2.cpp -lboost_system -lpthread
-
-    - name: Run SW program
-      run: |
-        Build/SW2_task2.exe &
+        ./Build/SW2_task2 > ci/test_output.txt 2>&1
         sleep 2
+
+    - name: Check test output for errors
+      run: cat ci/test_output.txt
 
     - name: Archive test results
       if: always()
@@ -43,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: binaries
-        path: Build/
+        path: Build/SW2_task2
