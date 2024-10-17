@@ -1,49 +1,48 @@
-name: CI Pipeline
+name: Build and Test SW Project
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  build:
+
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: |
-        choco install mingw
-        echo "C:\tools\mingw64\bin" >> $GITHUB_PATH
+      - name: Set up Boost
+        run: |
+          choco install boost-msvc-14.2 --version=1.82.0
+          choco install boost-msvc-14.2 --version=1.82.0 --pre --force
+          echo BOOST_ROOT=C:/tools/boost_1_82_0 >> $GITHUB_ENV
+          echo BOOST_INCLUDEDIR=C:/tools/boost_1_82_0 >> $GITHUB_ENV
+          echo BOOST_LIBRARYDIR=C:/tools/boost_1_82_0/lib64-msvc-14.2 >> $GITHUB_ENV
 
-    - name: Download and install socat
-      run: |
-        Invoke-WebRequest -Uri "https://github.com/valorisa/socat-1.8.0.1_for_Windows/releases/download/v1.8.0.1/socat-1.8.0.1-x86_64.zip" -OutFile "socat.zip"
-        Expand-Archive -Path "socat.zip" -DestinationPath "C:\tools\"
-        Rename-Item -Path "C:\tools\socat-1.8.0.1-x86_64" -NewName "socat"
+      - name: Set up Visual Studio
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
 
-    - name: Set up virtual serial ports using Socat
-      run: |
-        socat -d -d PTY,link=COM3,raw,echo=0 PTY,link=COM4,raw,echo=0 &
+      - name: Install dependencies
+        run: |
+          vcpkg integrate install
+          vcpkg install boost-asio boost-system
 
-    - name: Build SW
-      run: g++ -o build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp -lws2_32
+      - name: Build project
+        run: |
+          mkdir build
+          cd build
+          cmake -A x64 ..
+          cmake --build . --config Release
 
-    - name: Run SW program
-      run: |
-        build\SW_Task2.exe &
-        sleep 2
-
-    - name: Archive test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: ci/test_output.txt
-
-    - name: Archive binaries
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: binaries
-        path: build/
-
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
