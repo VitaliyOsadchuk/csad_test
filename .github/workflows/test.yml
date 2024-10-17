@@ -24,7 +24,7 @@ jobs:
         sudo socat -d -d PTY,link=/dev/ttyS10,raw,echo=0 PTY,link=/dev/ttyS11,raw,echo=0 &
 
     - name: Build SW
-      run: x86_64-w64-mingw32-g++ -o build/SW2_task2.exe src/SW2_task2/SW2_task2/SW2_task2.cpp -lboost_system -lpthread
+      run: x86_64-w64-mingw32-g++ -o build/SW2_task2.exe src/HW_task2/SW2_task2/SW2_task2/SW2_task2.cpp -lboost_system -lpthread
 
     - name: Run SW program
       run: |
