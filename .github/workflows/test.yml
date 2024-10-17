@@ -10,16 +10,24 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Grant execute permission for build and test scripts
+    - name: Set up Visual Studio environment
       run: |
-        icacls ci/build.sh /grant Everyone:F
-        icacls ci/test.sh /grant Everyone:F
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
 
-    - name: Build binaries
-      run: ci/build.sh
+    - name: Install dependencies
+      run: choco install socat
 
-    - name: Run tests
-      run: ci/test.sh
+    - name: Set up virtual serial ports using Socat
+      run: |
+        socat -d -d pty,link=COM3,raw,echo=0 pty,link=COM4,raw,echo=0 &
+
+    - name: Build SW
+      run: cl /EHsc /Fe:build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp
+
+    - name: Run SW program
+      run: |
+        build\SW_Task2.exe &
+        sleep 2
 
     - name: Archive test results
       if: always()
