@@ -1,4 +1,4 @@
-name: Build and Test SW Project
+name: Build and Test SW Project with Serial Port Emulation
 
 on:
   push:
@@ -11,38 +11,37 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Boost
-        run: |
-          choco install boost-msvc-14.2 --version=1.82.0
-          choco install boost-msvc-14.2 --version=1.82.0 --pre --force
-          echo BOOST_ROOT=C:/tools/boost_1_82_0 >> $GITHUB_ENV
-          echo BOOST_INCLUDEDIR=C:/tools/boost_1_82_0 >> $GITHUB_ENV
-          echo BOOST_LIBRARYDIR=C:/tools/boost_1_82_0/lib64-msvc-14.2 >> $GITHUB_ENV
-
-      - name: Set up Visual Studio
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x64
-
       - name: Install dependencies
         run: |
-          vcpkg integrate install
-          vcpkg install boost-asio boost-system
+          sudo apt-get update
+          sudo apt-get install -y socat minicom
+
+      - name: Set up virtual COM ports with socat
+        run: |
+          sudo socat PTY,link=/dev/ttyCOM3,raw,echo=0 PTY,link=/dev/ttyCOM4,raw,echo=0 &
+          sleep 2
+          ls -l /dev/ttyCOM*
 
       - name: Build project
         run: |
           mkdir build
           cd build
-          cmake -A x64 ..
+          cmake ..
           cmake --build . --config Release
 
-      - name: Run tests
+      - name: Run software with serial port emulation
         run: |
-          cd build
-          ctest --output-on-failure
+          sudo chmod 666 /dev/ttyCOM3 /dev/ttyCOM4
+          ./build/my_project_executable /dev/ttyCOM3 &
+          echo "Test message from CI" > /dev/ttyCOM4
+          cat < /dev/ttyCOM3
+
+      - name: Test project
+        run: |
+          ./build/test_executable
