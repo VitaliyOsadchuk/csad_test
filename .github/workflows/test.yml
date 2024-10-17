@@ -16,14 +16,14 @@ jobs:
         sudo apt-get install -y g++ libboost-all-dev
 
     - name: Build SW with Mock HW
-      run: g++ -DMOCK_HW -o Build/SW_task2.exe src/SW_task2/SW_task2/client.cpp -I src/ -lboost_system -lpthread
+      run: g++ -DMOCK_HW -o Build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp -I src/ -lboost_system -lpthread
 
     - name: List Build directory contents
       run: ls -l Build/
 
     - name: Run SW program with Mock HW
       run: |
-        ./Build/SW_task2.exe > ci/test_output.txt 2>&1 || true
+        ./Build/SW_Task2.exe > ci/test_output.txt 2>&1 || true
         sleep 2
 
     - name: Check test output for errors
@@ -41,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: binaries
-        path: Build/SW_task2.exe
+        path: Build/SW_Task2.exe
