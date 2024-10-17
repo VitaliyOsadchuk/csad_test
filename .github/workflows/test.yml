@@ -20,7 +20,7 @@ jobs:
 
     - name: Run SW program with Mock HW
       run: |
-        ./Build/SW2_task2.exe > ci/test_output.txt 2>&1
+        ./Build/SW2_task2 > ci/test_output.txt 2>&1
         sleep 2
 
     - name: Check test output for errors
@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: binaries
-        path: Build/SW2_task2.exe
+        path: SW2_task2
