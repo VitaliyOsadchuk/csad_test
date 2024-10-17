@@ -15,19 +15,17 @@ jobs:
         choco install mingw
         choco install socat
         echo "::add-path::C:\\tools\\mingw64\\bin"
-        echo "::add-path::C:\\Program Files\\Git\\usr\\bin" # for sleep command
 
     - name: Set up virtual serial ports using Socat
       run: |
         socat -d -d PTY,link=COM3,raw,echo=0 PTY,link=COM4,raw,echo=0 &
 
     - name: Build SW
-      run: |
-        g++ -o build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp -lws2_32 -I C:/tools/mingw64/x86_64-w64-mingw32/include -L C:/tools/mingw64/x86_64-w64-mingw32/lib
+      run: g++ -o build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp -lws2_32
 
     - name: Run SW program
       run: |
-        build/SW_Task2.exe &
+        build\\SW_Task2.exe &
         sleep 2
 
     - name: Archive test results
