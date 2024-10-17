@@ -24,11 +24,11 @@ jobs:
         sudo socat -d -d PTY,link=/dev/ttyS10,raw,echo=0 PTY,link=/dev/ttyS11,raw,echo=0 &
 
     - name: Build SW
-      run: x86_64-w64-mingw32-g++ -o build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp -lboost_system -lpthread
+      run: x86_64-w64-mingw32-g++ -o build/SW_task2.exe src/SW_task2/SW_task2/client.cpp -lboost_system -lpthread
 
     - name: Run SW program
       run: |
-        build/SW_Task2.exe &
+        build/SW_task2.exe &
         sleep 2
 
     - name: Archive test results
