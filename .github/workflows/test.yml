@@ -14,7 +14,6 @@ jobs:
       run: |
         choco install mingw
         choco install socat
-        echo "::add-path::C:\\tools\\mingw64\\bin"
 
     - name: Set up virtual serial ports using Socat
       run: |
@@ -25,7 +24,7 @@ jobs:
 
     - name: Run SW program
       run: |
-        build\\SW_Task2.exe &
+        build\SW_Task2.exe &
         sleep 2
 
     - name: Archive test results
