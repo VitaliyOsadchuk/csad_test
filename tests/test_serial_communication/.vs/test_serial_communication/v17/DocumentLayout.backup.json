@@ -30,8 +30,7 @@
               "RelativeToolTip": "test_serial_communication\\pseudo_serial.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-10-16T18:48:34.037Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-16T18:48:34.037Z"
             },
             {
               "$type": "Document",
@@ -39,9 +38,9 @@
               "Title": "test.cpp",
               "DocumentMoniker": "C:\\Users\\MSI\\Desktop\\csad_test\\tests\\test_serial_communication\\test_serial_communication\\test.cpp",
               "RelativeDocumentMoniker": "test_serial_communication\\test.cpp",
-              "ToolTip": "C:\\Users\\MSI\\Desktop\\csad_test\\tests\\test_serial_communication\\test_serial_communication\\test.cpp",
-              "RelativeToolTip": "test_serial_communication\\test.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\MSI\\Desktop\\csad_test\\tests\\test_serial_communication\\test_serial_communication\\test.cpp*",
+              "RelativeToolTip": "test_serial_communication\\test.cpp*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-16T15:41:17.175Z",
               "EditorCaption": ""

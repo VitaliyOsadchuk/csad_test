@@ -28,7 +28,6 @@ TEST(SerialCommunicationTest, TestSerialCommunication) {
     }
 }
 
-// Головна функція для виконання тестів
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
