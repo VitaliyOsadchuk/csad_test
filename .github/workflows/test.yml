@@ -38,4 +38,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: binaries
-        path: SW2_task2
+        path: /SW2_task2
