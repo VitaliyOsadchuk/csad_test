@@ -1,36 +1,47 @@
-name: CI Pipeline
+name: Build and Test SW Project with Serial Port Emulation
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-test:
-    runs-on: windows-latest
+  build:
+
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Grant execute permission for build and test scripts
-      run: |
-        icacls ci/build.sh /grant Everyone:F
-        icacls ci/test.sh /grant Everyone:F
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y socat
 
-    - name: Build binaries
-      run: ci/build.sh
+      - name: Set up virtual COM ports with socat
+        run: |
+          sudo socat PTY,link=/dev/ttyCOM3,raw,echo=0 PTY,link=/dev/ttyCOM4,raw,echo=0 &
+          sleep 2
+          ls -l /dev/ttyCOM*
 
-    - name: Run tests
-      run: ci/test.sh
+      - name: Build project
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build . --config Release
 
-    - name: Archive test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: ci/test_output.txt
+      - name: Run software with serial port emulation
+        run: |
+          sudo chmod 666 /dev/ttyCOM3 /dev/ttyCOM4
+          ./build/my_project_executable /dev/ttyCOM3 &
+          echo "Test message from CI" > /dev/ttyCOM4
+          cat < /dev/ttyCOM3
 
-    - name: Archive binaries
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: binaries
-        path: build/
+      - name: Test project
+        run: |
+          ./build/test_executable
