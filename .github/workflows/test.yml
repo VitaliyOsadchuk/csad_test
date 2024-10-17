@@ -10,23 +10,24 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Visual Studio environment
-      run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
-
     - name: Install dependencies
-      run: choco install socat
+      run: |
+        choco install mingw
+        choco install socat
+        echo "::add-path::C:\\tools\\mingw64\\bin"
+        echo "::add-path::C:\\Program Files\\Git\\usr\\bin" # for sleep command
 
     - name: Set up virtual serial ports using Socat
       run: |
-        socat -d -d pty,link=COM3,raw,echo=0 pty,link=COM4,raw,echo=0 &
+        socat -d -d PTY,link=COM3,raw,echo=0 PTY,link=COM4,raw,echo=0 &
 
     - name: Build SW
-      run: cl /EHsc /Fe:build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp
+      run: |
+        g++ -o build/SW_Task2.exe src/SW_Task2/SW_Task2/client.cpp -lws2_32 -I C:/tools/mingw64/x86_64-w64-mingw32/include -L C:/tools/mingw64/x86_64-w64-mingw32/lib
 
     - name: Run SW program
       run: |
-        build\SW_Task2.exe &
+        build/SW_Task2.exe &
         sleep 2
 
     - name: Archive test results
