@@ -13,7 +13,13 @@ jobs:
     - name: Install dependencies
       run: |
         choco install mingw
-        choco install socat
+        echo "C:\tools\mingw64\bin" >> $GITHUB_PATH
+
+    - name: Download and install socat
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/valorisa/socat-1.8.0.1_for_Windows/releases/download/v1.8.0.1/socat-1.8.0.1-x86_64.zip" -OutFile "socat.zip"
+        Expand-Archive -Path "socat.zip" -DestinationPath "C:\tools\"
+        Rename-Item -Path "C:\tools\socat-1.8.0.1-x86_64" -NewName "socat"
 
     - name: Set up virtual serial ports using Socat
       run: |
@@ -40,3 +46,4 @@ jobs:
       with:
         name: binaries
         path: build/
+
